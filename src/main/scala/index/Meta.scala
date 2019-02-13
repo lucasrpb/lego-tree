@@ -4,7 +4,8 @@ import java.util.UUID
 import scala.reflect.ClassTag
 
 class Meta[T: ClassTag, K: ClassTag, V: ClassTag](override val id: T,
-                                                  val ORDER: Int)(implicit val ord: Ordering[K])
+                                                  val ORDER: Int,
+                                                  val level: Int)(implicit val ord: Ordering[K])
   extends Lego[T, K, Lego[T, K, V]]{
 
   val MIN = ORDER - 1
@@ -55,7 +56,9 @@ class Meta[T: ClassTag, K: ClassTag, V: ClassTag](override val id: T,
     if(legos.isFull()){
 
       val old = legos.inOrder()
-      legos = new Index[T, K, Lego[T, K, V]](UUID.randomUUID.toString.asInstanceOf[T], ORDER, ORDER)
+      legos = new Index[T, K, Lego[T, K, V]](UUID.randomUUID.toString.asInstanceOf[T], ORDER, ORDER, level + 1)
+
+      println(s"FULL META! ${old.map{case (k, p) => p.inOrder().length -> p.asInstanceOf[Block[T, K, V]].MAX}}\n")
 
       legos.insert(old)
     }
@@ -85,5 +88,17 @@ class Meta[T: ClassTag, K: ClassTag, V: ClassTag](override val id: T,
 
   override def inOrder(): Seq[(K, Lego[T, K, V])] = {
     legos.inOrder()
+  }
+
+  override def toString: String = {
+
+    val sb = new StringBuilder()
+
+    sb.append(s"meta ")
+    sb.append(legos.toString)
+    sb.append("end of meta")
+    sb.append("\n")
+
+    sb.toString()
   }
 }

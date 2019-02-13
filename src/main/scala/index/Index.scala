@@ -5,7 +5,8 @@ import scala.reflect.ClassTag
 
 class Index[T: ClassTag, K: ClassTag, V: ClassTag](override val id: T,
                                                    val DATA_ORDER: Int,
-                                                   val META_ORDER: Int)
+                                                   val META_ORDER: Int,
+                                                   val level: Int = 0)
                                                   (implicit val ord: Ordering[K]) extends Lego[T, K, V]{
 
   val DATA_MIN = DATA_ORDER - 1
@@ -15,7 +16,7 @@ class Index[T: ClassTag, K: ClassTag, V: ClassTag](override val id: T,
   val META_MAX = META_ORDER*2 - 1
 
   val meta: Lego[T, K, Lego[T, K, V]] = new Meta[T, K, V](UUID.randomUUID.toString.asInstanceOf[T],
-    META_ORDER)
+    META_ORDER, level)
 
   var size = 0
 
@@ -235,5 +236,18 @@ class Index[T: ClassTag, K: ClassTag, V: ClassTag](override val id: T,
     meta.inOrder().foldLeft(Seq.empty[(K, V)]){ case (p, (_, n)) =>
       p ++ n.inOrder()
     }
+  }
+
+  override def toString(): String = {
+    val sb = new StringBuilder()
+
+    sb.append(s"index ")
+    sb.append(meta.toString)
+    sb.append("\n")
+    sb.append("children: ").append(meta.inOrder().map(_._2.toString))
+    sb.append("end of index")
+    sb.append("\n")
+
+    sb.toString()
   }
 }

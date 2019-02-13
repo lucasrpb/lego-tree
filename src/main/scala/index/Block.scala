@@ -147,10 +147,6 @@ class Block[T: ClassTag, K: ClassTag, V: ClassTag](override val id: T,
     right
   }
 
-  override def toString(): String = {
-    inOrder().map(_._1).mkString("(", "," ,")")
-  }
-
   override def find(k: K): Option[V] = {
     val (found, pos) = find(k, 0, size - 1)
     if(!found) return None
@@ -239,5 +235,9 @@ class Block[T: ClassTag, K: ClassTag, V: ClassTag](override val id: T,
   override def inOrder(): Seq[(K, V)] = {
     if(isEmpty()) return Seq.empty[(K, V)]
     keys.slice(0, size)
+  }
+
+  override def toString(): String = {
+    inOrder().map(_._1).mkString("(", "," ,")")
   }
 }
