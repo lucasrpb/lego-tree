@@ -28,7 +28,7 @@ class MainSpec extends FlatSpec {
     val index = new Index[String, Int, Int](UUID.randomUUID.toString, DATA_ORDER, META_ORDER)
     var data = Seq.empty[(Int, Int)]
 
-    val n = 100//rand.nextInt(1, 1000)
+    val n = 1000//rand.nextInt(1, 1000)
 
     var list = Seq.empty[(Int, Int)]
 

@@ -193,10 +193,8 @@ class Index[T: ClassTag, K: ClassTag, V: ClassTag](override val id: T,
 
     if(p.hasMinimum()){
 
-      meta.remove(Seq(max))
-      meta.insert(Seq(p.last.get -> p))
-
-      return true -> n
+     return (meta.remove(Seq(max))._1 &&
+      meta.insert(Seq(p.last.get -> p))._1) -> n
     }
 
     borrow(max, p) -> n
