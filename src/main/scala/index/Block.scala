@@ -231,9 +231,9 @@ class Block[T: ClassTag, K: ClassTag, V: ClassTag](override val id: T,
   override def isEmpty(): Boolean = size == 0
   override def hasMinimum(): Boolean = size >= MIN
 
-  override def last: Option[(K, V)] = {
+  override def last: Option[K] = {
     if(isEmpty()) return None
-    Some(keys(size - 1))
+    Some(keys(size - 1)._1)
   }
 
   override def inOrder(): Seq[(K, V)] = {

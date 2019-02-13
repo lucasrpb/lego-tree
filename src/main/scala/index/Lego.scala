@@ -8,7 +8,7 @@ trait Lego[T, K, V] {
   def near(k: K): Option[V]
   def left(k: K): Option[V]
   def right(k: K): Option[V]
-  def last: Option[(K, V)]
+  def last: Option[K]
   def split(): Lego[T, K, V]
   def canBorrowTo(p: Lego[T, K, V]): Boolean
   def borrowLeftTo(p: Lego[T, K, V]): Lego[T, K, V]
